@@ -16,6 +16,13 @@ export const login = (data) => {
   }
 };
 
+export const valid_data = (data) => {
+  if(isValid(data)){
+    return true;
+  }
+  return false;
+}
+
 export const VerifyPass = async (data) => {
   const passDB = data.db;
   const pass = data.pass;

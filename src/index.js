@@ -6,8 +6,8 @@ import sockets from './sockets';
 
 //connectDB();
 const server = http.createServer(app);
-const httpServer = server.listen(3000);
-console.log("Server running in port 3000");
+const httpServer = server.listen(4000);
+console.log("Server running in port 4000");
 
 const io = new WebsocketServer(httpServer);
 sockets(io);

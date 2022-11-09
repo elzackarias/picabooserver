@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { login, VerifyPass } from "../helpers/auth";
+import { sendEmail } from "../controllers/sendEmail";
+//Controllers
+import { register, login as LogIn, verify } from "../controllers/auth.controller";
 
 const router = Router();
 
-router.get("/", function (req, res) {
-  /* const newUser = new Users({
+router.get("/", function(req, res) {
+    /* const newUser = new Users({
       name:'Emmanuel Venancio',
       email:'venancio@ivana.com',
       password:'ivanaverania'
@@ -19,43 +22,17 @@ router.get("/", function (req, res) {
    const resp = login(user)
    res.json(resp)
 */
-  res.json({
-    status: "Error",
-    msg: "Ocurrió un error al generar la solicitud",
-  });
+    res.json({
+        status: "Error",
+        msg: "Ocurrió un error al generar la solicitud",
+    });
 });
 
-router.post("/setCoords", function (req, res, next) {
-  console.log(req.body);
-  res.json(req.body);
-});
+router.post('/register', register);
 
-router.get("/route/:id", function (req, res, next) {
-  const route_id = req.params.id;
-  res.send(route_id);
-});
+router.post("/login", LogIn);
 
-router.get("/routes", function (req, res, next) {
-  mysqlConnection.query(
-    "SELECT id,name FROM rutas",
-    async (err, rows, fields) => {
-      let rutas = [];
-      if (!err) {
-        for (let index = 0; index < rows.length; index++) {
-          rutas.push(rows[index]);
-        }
-        res.json({ rutas });
-      } else {
-        res.json({
-          status: "Error",
-          msg: "Chale, algo salió mal",
-        });
-      }
-    }
-  );
-});
-
-router.post("/login", async function (req, res, next) {
+/*router.post("/login", async function (req, res, next) {
   const data = login(req.body);
   if (data.status == "Ok") {
     const query = await Users.find({ email: req.body.email });
@@ -80,9 +57,16 @@ router.post("/login", async function (req, res, next) {
   } else {
     res.json(data);
   }
-});
+});*/
 
-router.post("/register", async function (req, res, next) {
+router.post('/verify', verify)
+
+router.get('/email', function(req, res) {
+    sendEmail({ email: "gpwjose65@gmail.com", code: 93823 })
+    res.send('ok')
+})
+
+/*router.post("/register", async function (req, res, next) {
   if (req.body.email === "undefined" || req.body.password === "undefined") {
     res.json({
       status: "Error",
@@ -145,15 +129,16 @@ router.post("/register", async function (req, res, next) {
     }
   }
 });
+*/
 
-router.get('/about', function(req,res){
-  res.send('Acercaaaa')
+router.get('/about', function(req, res) {
+    res.send('Acercaaaa')
 });
 
-router.get("/info", function (req, res) {
-  res.send(
-    '<h1>Bienvenido al servidor de Kmino</h1><br/><span>Este proyecto no seria posible sin la ayuda de proyectos como:</span><br><ul><li>Google Maps API</li><li>Socket.io</li></ul><h4>Por: Jose Zacarias & el poder de NodeJS y PHP</h4><a href="/">Inicio</a>'
-  );
+router.get("/info", function(req, res) {
+    res.send(
+        '<h1>Bienvenido al servidor de Kmino</h1><br/><span>Este proyecto no seria posible sin la ayuda de proyectos como:</span><br><ul><li>Google Maps API</li><li>Socket.io</li></ul><h4>Por: Jose Zacarias & el poder de NodeJS y PHP</h4><a href="/">Inicio</a>'
+    );
 });
 
 export default router;
